@@ -16,6 +16,6 @@ Widget build(BuildContext context){
   }
 }
 
-class IconPath(
- static String get homeOff => 'assets/images/bottom_nav_'
-)
+class IconsPath{
+  static String get homeOff => 'assets/images/bottom_nav_home_off_icon.jpg';
+}
