@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/components/avater_widget.dart';
 import 'package:untitled/src/components/image_data.dart';
+import 'package:untitled/src/components/post_widget.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -65,9 +66,13 @@ class Home extends StatelessWidget {
     );
   }
 
-  //Widget _postList() {
 
-  //}
+  Widget _postList() {
+    return Column(
+      children:
+        List.generate(50, (index) => PostWidget()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: ImageData(
-          IconsPath.logo,
+          IconsPath.Catlogo,
           width: 270,
         ),
         actions: [
@@ -94,7 +99,7 @@ class Home extends StatelessWidget {
       body: ListView(
         children: [
           _storyBoardList(),
-          // _postList(),
+          _postList(),
         ],
       ),
     );

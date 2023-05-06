@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/src/components/avater_widget.dart';
 import 'package:untitled/src/components/image_data.dart';
 import 'package:untitled/src/controller/bottom_nav_controller.dart';
 import 'package:untitled/src/pages/home.dart';
@@ -59,12 +60,18 @@ class App extends GetView<BottomNavController> {
                   label: 'home',
                 ),
                 BottomNavigationBarItem(
+                  icon: AvatarWidget(thumbPath:
+                  'https://images.mypetlife.co.kr/content/uploads/2022/06/24114917/14717315053_0158b9be88_o-scaled.jpg',
+                      type: AvatarType.TYPE2,
+                  size: 50,),
+                  /*
                   icon: Container(
                     width: 30,
                     height: 30,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.grey),
                   ),
+                  */
                   label: 'home',
                 ),
               ],
