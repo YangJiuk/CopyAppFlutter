@@ -34,6 +34,13 @@ class AvatarWidget extends StatelessWidget {
             ]),
         shape: BoxShape.circle,
       ),
+      child: type2Widget(),
+    );
+  }
+
+
+  Widget type2Widget() {
+    return Container(
       child: Container(
         padding: const EdgeInsets.all(2),
         decoration: const BoxDecoration(
@@ -54,13 +61,13 @@ class AvatarWidget extends StatelessWidget {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     switch (type) {
       case AvatarType.TYPE1:
         return type1Widget();
       case AvatarType.TYPE2:
+        return type2Widget();
       case AvatarType.TYPE3:
         return Container();
     }
