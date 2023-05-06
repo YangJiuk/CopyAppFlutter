@@ -81,7 +81,7 @@ class Home extends StatelessWidget {
         elevation: 0,
         title: ImageData(
           IconsPath.Catlogo,
-          width: 275,
+          width: 270,
         ),
         actions: [
           GestureDetector(
