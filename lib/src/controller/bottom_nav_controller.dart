@@ -44,10 +44,8 @@ class BottomNavController extends GetxController {
           },
         cancelCallback: Get.back,
       ));
-      print('exit');
       return true;
     } else {
-      print('goto before page');
       bottomHistory.removeLast();
       var index = bottomHistory.last;
       _changePage(index,false);

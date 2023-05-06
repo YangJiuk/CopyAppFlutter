@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class ImageData extends StatelessWidget{
+class
+ImageData extends StatelessWidget{
    String icon;
    final double? width;
   ImageData(this.icon,{Key? key,this.width = 55}) : super(key : key);
