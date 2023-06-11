@@ -84,6 +84,8 @@ class PostWidget extends StatelessWidget {
     );
   }
 
+  //Todo
+  //Data-Link-Firebase => Post Data On <= RealtimeDataBase
   Widget _infoDescriptions() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
