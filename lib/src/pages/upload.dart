@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:untitled/src/components/image_data.dart';
+import 'dart:async';
+import 'dart:typed_data';
 
 class Upload extends StatefulWidget {
   const Upload({Key? key}) : super(key: key);
@@ -10,6 +12,10 @@ class Upload extends StatefulWidget {
 }
 
 class _UploadState extends State<Upload> {
+  var albums = <AssetPathEntity>[];
+  var headerTitle = '';
+  var imageList = <AssetEntity>[];
+
   @override
   void initState() {
     super.initState();
@@ -19,11 +25,34 @@ class _UploadState extends State<Upload> {
   void _loadPhotos() async {
     var result = await PhotoManager.requestPermissionExtend();
     if (result.isAuth) {
+      albums = await PhotoManager.getAssetPathList(
+          type: RequestType.image,
+          filterOption:
+          FilterOptionGroup(imageOption: const FilterOption(), orders: [
+            const OrderOption(type: OrderOptionType.createDate, asc: false),
+          ]));
+      _loadData();
     } else {}
   }
 
+  void Update() => setState(() {});
+
+  void _loadData() async {
+    headerTitle = albums.first.name;
+    await _pagingPhotos();
+    Update();
+  }
+
+  Future<void> _pagingPhotos() async {
+    var photos = await albums.first.getAssetListPaged(page: 0, size: 20);
+    imageList.addAll(photos);
+  }
+
   Widget _imagePreview() {
-    var width = MediaQuery.of(context).size.width;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Container(
       width: width,
       height: width,
@@ -40,9 +69,9 @@ class _UploadState extends State<Upload> {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
-              children: const [
+              children: [
                 Text(
-                  '갤러리',
+                  headerTitle,
                   style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
                 Icon(Icons.arrow_drop_down),
@@ -53,7 +82,7 @@ class _UploadState extends State<Upload> {
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                 decoration: BoxDecoration(
                     color: const Color(0xff808080),
                     borderRadius: BorderRadius.circular(30)),
@@ -100,12 +129,29 @@ class _UploadState extends State<Upload> {
             childAspectRatio: 1,
             mainAxisSpacing: 1,
             crossAxisSpacing: 1),
-        itemCount: 100,
+        itemCount: imageList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            color: Colors.red,
-          );
+          return _photowidget(
+              imageList[index]);
         });
+  }
+
+
+  Widget _photowidget(AssetEntity asset) {
+    return FutureBuilder(
+        future: asset.thumbDataWithSize(200, 200),
+        builder: (_,AsyncSnapshot<Uint8List?> snapshot){
+          if(snapshot.hasData){
+            return Image.memory(
+              snapshot.data!,
+              fit: BoxFit.cover,
+            );
+          }
+          else  {
+            return Container();
+          }
+        }
+        );
   }
 
   @override
