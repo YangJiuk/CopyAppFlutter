@@ -15,6 +15,7 @@ class _UploadState extends State<Upload> {
   var albums = <AssetPathEntity>[];
   var headerTitle = '';
   var imageList = <AssetEntity>[];
+  AssetEntity? selectedImage;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _UploadState extends State<Upload> {
       albums = await PhotoManager.getAssetPathList(
           type: RequestType.image,
           filterOption:
-          FilterOptionGroup(imageOption: const FilterOption(), orders: [
+              FilterOptionGroup(imageOption: const FilterOption(), orders: [
             const OrderOption(type: OrderOptionType.createDate, asc: false),
           ]));
       _loadData();
@@ -44,19 +45,25 @@ class _UploadState extends State<Upload> {
   }
 
   Future<void> _pagingPhotos() async {
-    var photos = await albums.first.getAssetListPaged(page: 0,size: 20);
+    var photos = await albums.first.getAssetListPaged(page: 0, size: 20);
     imageList.addAll(photos);
+    selectedImage = imageList.first;
   }
 
   Widget _imagePreview() {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var width = MediaQuery.of(context).size.width;
     return Container(
       width: width,
       height: width,
       color: Colors.grey,
+      child: selectedImage == null
+          ? Container()
+          : _photowidget(selectedImage!, width.toInt(), builder: (data) {
+              return Image.memory(
+                data,
+                fit: BoxFit.cover,
+              );
+            }),
     );
   }
 
@@ -66,23 +73,69 @@ class _UploadState extends State<Upload> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Text(
-                  headerTitle,
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
                 ),
-                Icon(Icons.arrow_drop_down),
-              ],
+                builder: (_) => Container(
+                  height: 300,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 7),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black54,
+                          ),
+                          width: 40,
+                          height: 4,
+                        ),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: List.generate(
+                              albums.length,
+                              (index) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
+                                child: Text(albums[index].name),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Text(
+                    headerTitle,
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ),
           Row(
             children: [
               Container(
                 padding:
-                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                 decoration: BoxDecoration(
                     color: const Color(0xff808080),
                     borderRadius: BorderRadius.circular(30)),
@@ -131,27 +184,35 @@ class _UploadState extends State<Upload> {
             crossAxisSpacing: 1),
         itemCount: imageList.length,
         itemBuilder: (BuildContext context, int index) {
-          return _photowidget(
-              imageList[index]);
+          return _photowidget(imageList[index], 200, builder: (data) {
+            return GestureDetector(
+              onTap: () {
+                selectedImage = imageList[index];
+                Update();
+              },
+              child: Opacity(
+                opacity: imageList[index] == selectedImage ? 0.3 : 1,
+                child: Image.memory(
+                  data,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          });
         });
   }
 
-
-  Widget _photowidget(AssetEntity asset) {
+  Widget _photowidget(AssetEntity asset, int size,
+      {required Widget Function(Uint8List) builder}) {
     return FutureBuilder(
-        future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
-        builder: (_,AsyncSnapshot<Uint8List?> snapshot){
-          if(snapshot.hasData){
-            return Image.memory(
-              snapshot.data!,
-              fit: BoxFit.cover,
-            );
-          }
-          else  {
+        future: asset.thumbnailDataWithSize(ThumbnailSize(size, size)),
+        builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
+          if (snapshot.hasData) {
+            return builder(snapshot.data!);
+          } else {
             return Container();
           }
-        }
-        );
+        });
   }
 
   @override
