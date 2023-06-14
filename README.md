@@ -4,15 +4,6 @@ A new Flutter project.
 
 #개발하는 남자 - 인스타그램 클론코딩
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 제 1 목표. 캣스타그램 => 사진 분석 AI를 활용, 고양이 사진만 업로드 가능한 나만의 앱 개발
+# 제 2 목표, 플러터 언어 적응도 올리기
+# 제 3 목표, 프로그래밍 언어 공부에 익숙해지기
