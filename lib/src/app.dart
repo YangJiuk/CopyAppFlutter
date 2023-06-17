@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:untitled/src/components/avater_widget.dart';
 import 'package:untitled/src/components/image_data.dart';
 import 'package:untitled/src/controller/bottom_nav_controller.dart';
+import 'package:untitled/src/pages/active_history.dart';
 import 'package:untitled/src/pages/home.dart';
 import 'package:untitled/src/pages/search.dart';
 
@@ -28,12 +29,11 @@ class App extends GetView<BottomNavController> {
                         );
                       },
                     ),
-                    const Center(child: Text('UPLOAD')),
-                    const Center(child: Text('ACTIVITY')),
+                    const Center(),
+                    ActiveHistory(),
                     const Center(child: Text('MYPAGE')),
                   ],
                 ),
-
                 bottomNavigationBar: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   showSelectedLabels: false,
