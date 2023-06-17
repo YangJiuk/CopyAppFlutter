@@ -33,6 +33,7 @@ class App extends GetView<BottomNavController> {
                     const Center(child: Text('MYPAGE')),
                   ],
                 ),
+
                 bottomNavigationBar: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   showSelectedLabels: false,
