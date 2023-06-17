@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:untitled/src/components/avater_widget.dart';
 
@@ -112,7 +111,7 @@ class ActiveHistory extends StatelessWidget {
   }
 
 //하루 활동
-  Widget _newRecntlyActiveView({required String? Title}) {
+  Widget _newRecntlyActiveView({required String? title}) {
     Random random = Random();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -120,7 +119,7 @@ class ActiveHistory extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '$Title',
+            '$title',
             style: const TextStyle(
               fontSize: 16,
             ),
@@ -169,9 +168,9 @@ class ActiveHistory extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _newRecntlyActiveView(Title: '오늘'),
-            _newRecntlyActiveView(Title: '일주일'),
-            _newRecntlyActiveView(Title: '한달'),
+            _newRecntlyActiveView(title: '오늘'),
+            _newRecntlyActiveView(title: '일주일'),
+            _newRecntlyActiveView(title: '한달'),
           ],
         ),
       ),
